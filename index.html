@@ -1,13 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-  
+<head>
+   <style>
+      .image{    
+         margin:auto;   
+         display: block;    
+         text-align: center;    
+      }
+      h1{   
+         color:purple; 
+      }
+      img{   
+         border-radius: 10%; 
+         border: solid 1px;
+         width:300px;
+      }
+      /* For mobile phones add media query and set width to 200px: */ @media only screen and (max-width: 768px) { 
+         img{width:200px;
+      }}
+   </style>
+</head>
 <body>
-    <h2 style="color: blue">GeeksforGeeks</h2>
-    <p><b>Draggable image</b></p>
-    <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20210810224356/geeksimage2-200x146.png" 
-         alt="image"
-         draggable="true" />
+   <div class="image">
+      <h1>Image below can be dragged</h1>
+      <img src= "https://www.tutorialspoint.com/python_pillow/images/tutorials_point.jpg " alt="image" draggable="true"/> 
+   </div>
 </body>
-  
-</html>
+</html> 
