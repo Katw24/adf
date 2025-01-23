@@ -65,15 +65,3 @@
 				document.onmouseup = stopDrag;
 			}
 </script>
-
-function PreviousButton() {
-  return <Group gap='xs'>
-    <Image src={https://copyicon.com/img/Upload/Icons/Arrows/flat_round/circled-chevron-right.png} height={16} />
-    <Text>Back</Text>
-  </Group>;
-}
-
- <Pagination size='sm' radius='xl' withControls={false} {...props} >
-      <Pagination.Previous component={PreviousButton} />
-	<Pagination.Next Component={<NextButton/>} />
- </Pagination>
