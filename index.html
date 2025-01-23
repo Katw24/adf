@@ -65,3 +65,15 @@
 				document.onmouseup = stopDrag;
 			}
 </script>
+
+function PreviousButton() {
+  return <Group gap='xs'>
+    <Image src={prevIcon} height={16} />
+    <Text>Back</Text>
+  </Group>;
+}
+
+ <Pagination size='sm' radius='xl' withControls={false} {...props} >
+      <Pagination.Previous component={PreviousButton} />
+      <Pagination.Next component={NextButton} href="#page-2" />
+ </Pagination>
