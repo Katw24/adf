@@ -66,35 +66,14 @@
 			}
 </script>
 
-import React from 'react';
-import {
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+function PreviousButton() {
+  return <Group gap='xs'>
+    <Image src={https://copyicon.com/img/Upload/Icons/Arrows/flat_round/circled-chevron-right.png} height={16} />
+    <Text>Back</Text>
+  </Group>;
+}
 
-import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
-
-export default React.createClass({
-  render() {
-    return <ScrollableTabView
-      style={{marginTop: 20, }}
-      ref={(tabView) => {
-        if (tabView != null) {
-          this.tabView = tabView;
-        }
-      }}
-      renderTabBar={() => <DefaultTabBar />}
-    >
-      <Text tabLabel='Tab #1'>My</Text>
-      <Text tabLabel='Tab #2'>favorite</Text>
-      <Text tabLabel='Tab #3'>project</Text>
-      <TouchableOpacity tabLabel='Back' onPress={this.back.bind(this)}>
-        <Text>Hello</Text>
-      </TouchableOpacity>
-    </ScrollableTabView>;
-  },
-
-  back() {
-    this.tabView.goToPage(0);
-  }
-});
+ <Pagination size='sm' radius='xl' withControls={false} {...props} >
+      <Pagination.Previous component={PreviousButton} />
+      <Pagination.Next Component={NextButton}/>
+ </Pagination>
