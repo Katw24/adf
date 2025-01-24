@@ -16,22 +16,6 @@
   background-color: #ccc;
   border: 1px solid #FFFFF;
 }
-
-.dot.rotate {
-    top: -30px;
-    left: calc(50% - 5px);
-    cursor: url('https://findicons.com/files/icons/1620/crystal_project/16/rotate_ccw.png'), auto;
-}
-
-.rotate-link {
-    position: absolute;
-    width: 1px;
-    height: 15px;
-    background-color: #1E88E5;
-    top: -20px;
-    left: calc(50% + 0.5px);
-    z-index: -1;
-}
 	
 </style>
 <script>
@@ -81,36 +65,5 @@
 				document.onmousedown = startDrag;
 				document.onmouseup = stopDrag;
 			}
-
-	function getCurrentRotation(el) {
-    var st = window.getComputedStyle(el, null);
-    var tm = st.getPropertyValue("-webkit-transform") ||
-        st.getPropertyValue("-moz-transform") ||
-        st.getPropertyValue("-ms-transform") ||
-        st.getPropertyValue("-o-transform") ||
-        st.getPropertyValue("transform")
-    "none";
-    if (tm != "none") {
-        var values = tm.split('(')[1].split(')')[0].split(',');
-        var angle = Math.round(Math.atan2(values[1], values[0]) * (180 / Math.PI));
-        return (angle < 0 ? angle + 360 : angle);
-    }
-    return 0;
-}
-
-function rotateBox(deg) {
-    boxWrapper.style.transform = `rotate(${deg}deg)`;
-}
-	
-</script>
-
-	<p><a href="index 2.html">index 2</a></p>
-	<Image src="https://copyicon.com/img/Upload/Icons/Arrows/flat_round/circled-chevron-right.png">
-<style>
- 	 .dragme {
- 	 position: relative;
- 	 width: 100 px;
- 	 height: 100 px;
-}
 	    
 </Pagination>
