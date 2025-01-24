@@ -3,24 +3,26 @@
   <head>
     <link rel="stylesheet" type="text/css" href="index.css" />
     <title>Teste Arranjo de Figuras</title>
+    <imagetitle></imagetitle>
   </head>
   <body>
     <h1 class="title">Arraste a imagem na ordem correta</h1>
     <div class="container">
       <img
-        src="./page1Images/house1.png"
+        src="./page1Images/cap1.png"
+        alt="drag-and-drop image script"
+        title="drag-and-drop image script"
+        class="dragme"
+        caption="1"
+      />
+      <img
+        src="./page1Images/cap2.png"
         alt="drag-and-drop image script"
         title="drag-and-drop image script"
         class="dragme"
       />
       <img
-        src="./page1Images/house2.png"
-        alt="drag-and-drop image script"
-        title="drag-and-drop image script"
-        class="dragme"
-      />
-      <img
-        src="/page1Images/house3.png"
+        src="/page1Images/cap3.png"
         alt="drag-and-drop image script"
         title="drag-and-drop image script"
         class="dragme"
@@ -74,5 +76,5 @@
       document.onmousedown = startDrag;
       document.onmouseup = stopDrag;
     };
-  </script>
+</script>
 </html>
