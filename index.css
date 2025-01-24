@@ -1,0 +1,25 @@
+.title {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.dragme {
+  position: relative;
+  cursor: move;
+}
+
+.draggable {
+  background-color: #ccc;
+  border: 1px solid #000;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.linkContainer {
+    padding: 50px;
+    text-align: right;
+}
