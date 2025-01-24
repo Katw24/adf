@@ -1,70 +1,78 @@
-<img src="https://i.imgur.com/lzuFr97.png" alt="drag-and-drop image script" 
- title="drag-and-drop image script" class="dragme">
-<img src="https://i.imgur.com/F2wLXfV.png" alt="drag-and-drop image script" 
- title="drag-and-drop image script" class="dragme">
-<img src="https://i.imgur.com/xZPMv5H.png" alt="drag-and-drop image script" 
- title="drag-and-drop image script" class="dragme">
-<style>
-.dragme {
-	 position: relative;
- 	width: 346 px;
- 	height: 344 px;
-	cursor: move;
-}
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="index.css" />
+    <title>Teste Arranjo de Figuras</title>
+  </head>
+  <body>
+    <h1 class="title">Arraste a imagem na ordem correta</h1>
+    <div class="container">
+      <img
+        src="./page1Images/house1.png"
+        alt="drag-and-drop image script"
+        title="drag-and-drop image script"
+        class="dragme"
+      />
+      <img
+        src="./page1Images/house2.png"
+        alt="drag-and-drop image script"
+        title="drag-and-drop image script"
+        class="dragme"
+      />
+      <img
+        src="/page1Images/house3.png"
+        alt="drag-and-drop image script"
+        title="drag-and-drop image script"
+        class="dragme"
+      />
+    </div>
+    <div class="linkContainer">
+      <a class="link" href="/index 2.html">Proximo</a>
+    </div>
+  </body>
+  <script>
+    function startDrag(e) {
+      if (!e) {
+        var e = window.event;
+      }
+      if (e.preventDefault) e.preventDefault();
+      var targ = e.target ? e.target : e.srcElement;
 
-#draggable {
-  background-color: #ccc;
-  border: 1px solid #000;
-}
-</style>
-<script>
-  	function startDrag(e) {
-				// determine event object
-				if (!e) {
-					var e = window.event;
-				}
-                if(e.preventDefault) e.preventDefault();
-
-				// IE uses srcElement, others use target
-				var targ = e.target ? e.target : e.srcElement;
-
-				if (targ.className != 'dragme') {return};
-				// calculate event X, Y coordinates
-					offsetX = e.clientX;
-					offsetY = e.clientY;
-
-				// assign default values for top and left properties
-				if(!targ.style.left) { targ.style.left='0px'};
-				if (!targ.style.top) { targ.style.top='0px'};
-
-				// calculate integer values for top and left 
-				// properties
-				coordX = parseInt(targ.style.left);
-				coordY = parseInt(targ.style.top);
-				drag = true;
-
-				// move div element
-					document.onmousemove=dragDiv;
-                return false;
-				
-			}
-			function dragDiv(e) {
-				if (!drag) {return};
-				if (!e) { var e= window.event};
-				var targ=e.target?e.target:e.srcElement;
-				// move div element
-				targ.style.left=coordX+e.clientX-offsetX+'px';
-				targ.style.top=coordY+e.clientY-offsetY+'px';
-				return false;
-			}
-			function stopDrag() {
-				drag=false;
-			}
-			window.onload = function() {
-				document.onmousedown = startDrag;
-				document.onmouseup = stopDrag;
-			}
-</script>
-	<p><a href="index 2.html"> index 2</a>a></p>
-	<Image src="https://i.imgur.com/khXzmiM.png">
-</Pagination>
+      if (targ.className != "dragme") {
+        return;
+      }
+      offsetX = e.clientX;
+      offsetY = e.clientY;
+      if (!targ.style.left) {
+        targ.style.left = "0px";
+      }
+      if (!targ.style.top) {
+        targ.style.top = "0px";
+      }
+      coordX = parseInt(targ.style.left);
+      coordY = parseInt(targ.style.top);
+      drag = true;
+      document.onmousemove = dragDiv;
+      return false;
+    }
+    function dragDiv(e) {
+      if (!drag) {
+        return;
+      }
+      if (!e) {
+        var e = window.event;
+      }
+      var targ = e.target ? e.target : e.srcElement;
+      targ.style.left = coordX + e.clientX - offsetX + "px";
+      targ.style.top = coordY + e.clientY - offsetY + "px";
+      return false;
+    }
+    function stopDrag() {
+      drag = false;
+    }
+    window.onload = function () {
+      document.onmousedown = startDrag;
+      document.onmouseup = stopDrag;
+    };
+  </script>
+</html>
