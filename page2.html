@@ -5,6 +5,9 @@
     <title>Teste Arranjo de Figuras</title>
   </head>
   <body>
+    <style>
+      body { background-color: #E0CD95;}
+    </style>
     <h1 class="title">Arraste a imagem na ordem correta</h1>
     <div class="container">
       <img
@@ -12,6 +15,7 @@
         alt="drag-and-drop image script"
         title="drag-and-drop image script"
         class="dragme"
+        id="1"
       />
       <img
         src="./page2Images/chase2.png"
@@ -46,7 +50,7 @@
         alt="próximo"></a>
     </div>
   </body>
-  <script>
+<script>
     function startDrag(e) {
       if (!e) {
         var e = window.event;
@@ -90,5 +94,8 @@
       document.onmousedown = startDrag;
       document.onmouseup = stopDrag;
     };
+
+   setTimeout(function () {window.location.href= "page2.html"
+      },60000);
   </script>
 </html>

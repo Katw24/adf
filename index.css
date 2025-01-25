@@ -18,7 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 15px; /* Add one space between images */ 
+  margin: 15px;
 }
 
 .linkContainer {

@@ -38,7 +38,7 @@
         alt="próximo"></a>
     </div>
   </body>
-  <script>
+<script>
     function startDrag(e) {
       if (!e) {
         var e = window.event;
@@ -82,5 +82,8 @@
       document.onmousedown = startDrag;
       document.onmouseup = stopDrag;
     };
+    
+  setTimeout(function () {window.location.href= "page2.html"
+    },60000);
 </script>
 </html>
