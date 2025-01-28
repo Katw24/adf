@@ -7,7 +7,7 @@
   position: relative;
   cursor: move;
   width: 7cm;
-  flex-wrap: wrap; 
+  marge: 0 auto;
 }
 .draggable {
   background-color: #ccc;
