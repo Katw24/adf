@@ -29,3 +29,9 @@
     align-items: center;
     justify-content: center;
 }
+
+.scr='./page11Images' {
+  position: absolute;
+  cursor: move;
+  width: 6cm;
+  flex-wrap: wrap;
