@@ -4,9 +4,10 @@
   font-family: sans-serif
 }
 .dragme {
-  position: relative;
+  position: absolute;
   cursor: move;
   width: 7cm;
+  flex-wrap: wrap;
 }
 .draggable {
   background-color: #ccc;
