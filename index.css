@@ -4,10 +4,9 @@
   font-family: sans-serif
 }
 .dragme {
-  position: absolute;
+  position: relative;
   cursor: move;
   width: 7cm;
-  flex-wrap: wrap;
 }
 .draggable {
   background-color: #ccc;
@@ -18,13 +17,13 @@
   align-items: center;
   justify-content: center;
   margin: 15px;
+  flex-wrap: wrap; 
 }
 .linkContainer {
     padding: 50px;
     text-align: right;
 }
 .linkContainer.inicio {
-    display: flex;
     padding: 50px;
     align-items: center;
     justify-content: center;
