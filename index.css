@@ -24,6 +24,7 @@
     text-align: right;
 }
 .linkContainer.inicio {
+    display: flex;
     padding: 50px;
     align-items: center;
     justify-content: center;
