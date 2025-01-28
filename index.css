@@ -10,6 +10,7 @@
   width: 7cm; /* Can be adjusted based on preference */
 }
 .page11Image {
+  position: absolute;
   width: 6cm;  /* Set the width to 6cm */
    cursor: move;
   height: auto; /* Maintain aspect ratio */
