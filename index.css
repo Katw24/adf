@@ -7,6 +7,7 @@
   position: absolute;
   cursor: move;
   width: 7cm;
+  overflow: hidden;
 }
 .draggable {
   background-color: #ccc;
@@ -16,8 +17,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 15px;
-  overflow: hidden;
 }
 .linkContainer {
     padding: 50px;
