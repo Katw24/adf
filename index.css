@@ -34,10 +34,3 @@ body {
   padding: 0;
   overflow: hidden; /* Prevent scrolling */
 }
-img[src^="./page11Images/"] {
-  width: 6cm; /* Set the width to 6cm */
-  height: auto; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
