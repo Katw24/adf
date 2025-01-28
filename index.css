@@ -38,7 +38,6 @@
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
 }
-
 .linkContainer.inicio img {
   height: auto; /* Maintain aspect ratio */
   display: block;
