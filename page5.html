@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="index.css" />
+    <title>Teste Arranjo de Figuras</title>
+    <imagetitle></imagetitle>
+  </head>
+  <body>
+    <style>
+      body { background-color: powderblue; }
+    </style>
+    <h1 class="title">Arraste a imagem na ordem correta</h1>
+    <div class="container">
+      <img
+        src="./page5Images/hunt1.png"
+        alt="drag-and-drop image script"
+        title="drag-and-drop image script"
+        class="dragme"
+      />
+      <img
+        src="./page4Images/hunt2.png"
+        alt="drag-and-drop image script"
+        title="drag-and-drop image script"
+        class="dragme"
+      />
+      <img
+        src="./page4Images/hunt3.png"
+        alt="drag-and-drop image script"
+        title="drag-and-drop image script"
+        class="dragme"
+      />
+       <img
+        src="./page4Images/hunt4.png"
+        alt="drag-and-drop image script"
+        title="drag-and-drop image script"
+        class="dragme"
+      />
+    </div>
+    <div class="linkContainer">
+      <a class="link" href="./page6.html"> 
+      <img 
+        src="./outros/7604747.png"; 
+        width="5%"
+        alt="próximo"></a>
+    </div>
+  </body>
+<script>
+    function startDrag(e) {
+      if (!e) {
+        var e = window.event;
+      }
+      if (e.preventDefault) e.preventDefault();
+      var targ = e.target ? e.target : e.srcElement;
+
+      if (targ.className != "dragme") {
+        return;
+      }
+      offsetX = e.clientX;
+      offsetY = e.clientY;
+      if (!targ.style.left) {
+        targ.style.left = "0px";
+      }
+      if (!targ.style.top) {
+        targ.style.top = "0px";
+      }
+      coordX = parseInt(targ.style.left);
+      coordY = parseInt(targ.style.top);
+      drag = true;
+      document.onmousemove = dragDiv;
+      return false;
+    }
+    function dragDiv(e) {
+      if (!drag) {
+        return;
+      }
+      if (!e) {
+        var e = window.event;
+      }
+      var targ = e.target ? e.target : e.srcElement;
+      targ.style.left = coordX + e.clientX - offsetX + "px";
+      targ.style.top = coordY + e.clientY - offsetY + "px";
+      return false;
+    }
+    function stopDrag() {
+      drag = false;
+    }
+    window.onload = function () {
+      document.onmousedown = startDrag;
+      document.onmouseup = stopDrag;
+    };
+</script>
+</html>
