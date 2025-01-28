@@ -29,9 +29,9 @@
     align-items: center;
     justify-content: center;
 }
-
-.scr='./page11Images' {
+img[src^="./page11Images/"] {
   position: absolute;
   cursor: move;
   width: 6cm;
-  flex-wrap: wrap;
+  height: auto; /* Keep the aspect ratio */
+}
