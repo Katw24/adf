@@ -9,7 +9,11 @@
   cursor: move;
   width: 7cm; /* Can be adjusted based on preference */
 }
-
+.page11Image {
+  width: 6cm;  /* Set the width to 6cm */
+   cursor: move;
+  height: auto; /* Maintain aspect ratio */
+}
 .container {
   display: flex;
   justify-content: center;
