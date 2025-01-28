@@ -7,7 +7,6 @@
   position: absolute;
   cursor: move;
   width: 7cm;
-  overflow: hidden;
 }
 .draggable {
   background-color: #ccc;
