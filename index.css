@@ -3,26 +3,27 @@
   text-align: center;
   font-family: sans-serif
 }
-
 .dragme {
   position: relative;
   cursor: move;
   width: 7cm;
 }
-
 .draggable {
   background-color: #ccc;
   border: 1px solid #000;
 }
-
 .container {
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 15px;
 }
-
 .linkContainer {
     padding: 50px;
     text-align: right;
+}
+.linkContainer.inicio {
+    padding: 50px;
+    align-items: center;
+    justify-content: center;
 }
