@@ -1,34 +1,37 @@
 .title {
   font-size: 1.5rem;
   text-align: center;
-  font-family: sans-serif
-}
-.dragme {
-  position: relative;
-  cursor: move;
-  width: 7cm;
-  flex-wrap: wrap;
-}
-.draggable {
-  background-color: #ccc;
-  border: 1px solid #000;
-}
-.container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 15px;
-}
-.linkContainer {
-    padding: 50px;
-    text-align: right;
-}
-.linkContainer.inicio {
-    padding: 50px;
-    align-items: center;
-    justify-content: center;
+  font-family: sans-serif;
 }
 
-./page3Images/bake.png {
-  width: 6cm;
+.dragme {
+  position: absolute; /* Use absolute positioning for dragging */
+  cursor: move;
+  width: 7cm; /* Can be adjusted based on preference */
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px;
+  position: relative; /* Keep container relative to handle absolute positioning of images */
+}
+
+.linkContainer {
+  padding: 50px;
+  text-align: right;
+}
+
+.linkContainer.inicio {
+  padding: 50px;
+  align-items: center;
+  justify-content: center;
+}
+
+body {
+  background-color: powderblue;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent scrolling */
 }
