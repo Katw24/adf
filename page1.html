@@ -39,48 +39,43 @@
     </div>
   </body>
 <script>
-    function startDrag(e) {
-      if (!e) {
-        var e = window.event;
-      }
-      if (e.preventDefault) e.preventDefault();
-      var targ = e.target ? e.target : e.srcElement;
+   let highestZ = 1; // Track highest z-index
 
-      if (targ.className != "dragme") {
-        return;
-      }
-      offsetX = e.clientX;
-      offsetY = e.clientY;
-      if (!targ.style.left) {
-        targ.style.left = "0px";
-      }
-      if (!targ.style.top) {
-        targ.style.top = "0px";
-      }
-      coordX = parseInt(targ.style.left);
-      coordY = parseInt(targ.style.top);
-      drag = true;
-      document.onmousemove = dragDiv;
-      return false;
-    }
-    function dragDiv(e) {
-      if (!drag) {
-        return;
-      }
-      if (!e) {
-        var e = window.event;
-      }
-      var targ = e.target ? e.target : e.srcElement;
-      targ.style.left = coordX + e.clientX - offsetX + "px";
-      targ.style.top = coordY + e.clientY - offsetY + "px";
-      return false;
-    }
-    function stopDrag() {
-      drag = false;
-    }
-    window.onload = function () {
-      document.onmousedown = startDrag;
-      document.onmouseup = stopDrag;
-    };
+function startDrag(e) {
+  if (!e) e = window.event;
+  if (e.preventDefault) e.preventDefault();
+
+  let targ = e.target ? e.target : e.srcElement;
+  if (!targ.classList.contains("dragme")) return;
+
+  targ.style.zIndex = ++highestZ; // Bring dragged image to the front
+
+  offsetX = e.clientX;
+  offsetY = e.clientY;
+
+  coordX = parseInt(targ.style.left || 0);
+  coordY = parseInt(targ.style.top || 0);
+
+  drag = true;
+  document.onmousemove = dragDiv;
+}
+
+function dragDiv(e) {
+  if (!drag) return;
+  if (!e) e = window.event;
+
+  let targ = e.target ? e.target : e.srcElement;
+  targ.style.left = coordX + e.clientX - offsetX + "px";
+  targ.style.top = coordY + e.clientY - offsetY + "px";
+}
+
+function stopDrag() {
+  drag = false;
+}
+
+window.onload = function () {
+  document.onmousedown = startDrag;
+  document.onmouseup = stopDrag;
+};
 </script>
 </html>
