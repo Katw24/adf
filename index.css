@@ -33,11 +33,12 @@
   margin-top: 10px;
 }
 .linkContainer {
-    padding: 50px;
-    text-align: right;
-    top: 112px; 
-    left: 110px;  
-    height: 100px;
+  position: fixed;  /* Keeps it in place even when scrolling */
+  right: 10px;      /* Places it on the right side */
+  top: 50%;         /* Positions it in the vertical center */
+  transform: translateY(-50%); /* Centers it vertically */
+  padding: 0;       /* Remove unnecessary padding */
+  text-align: right; /* Ensures proper alignment */
 }
 .linkinicio {
   display: flex; /* Use flexbox for centering */
