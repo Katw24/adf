@@ -79,9 +79,15 @@ function stopDrag() {
   drag = false;
 }
 
-window.onload = function () {
-  document.onmousedown = startDrag;
-  document.onmouseup = stopDrag;
-};
+ window.onload = function () {
+    document.addEventListener("mousedown", startDrag);
+    document.addEventListener("mousemove", dragDiv);
+    document.addEventListener("mouseup", stopDrag);
+
+    document.querySelectorAll(".dragme").forEach((img, i) => {
+      img.style.left = 50 + i * 260 + "px";
+      img.style.top = "100px";
+    });
+  };
 </script>
 </html>
