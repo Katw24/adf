@@ -87,9 +87,11 @@ window.onload = function () {
   document.addEventListener("mousemove", dragDiv);
   document.addEventListener("mouseup", stopDrag);
   document.querySelectorAll(".dragme").forEach((img, i) => {
-    img.style.left = 50 + i * 260 + "px";
-    img.style.top = "100px";
-  });
+  const col = i % 3;          // 0, 1, 2 → coluna
+  const row = Math.floor(i / 3); // 0 ou 1 → linha
+  img.style.left = 30  + col * 260 + "px";
+  img.style.top  = 20  + row * 280 + "px";
+});
 };
 </script>
 </html>
