@@ -51,43 +51,46 @@
     </div>
   </body>
 <script>
-    let highestZ = 1; // Track highest z-index
+let highestZ = 1;
+let drag = false;
+let dragTarget = null; // <-- guarda referência ao elemento arrastado
+let offsetX, offsetY, coordX, coordY;
 
 function startDrag(e) {
   if (!e) e = window.event;
   if (e.preventDefault) e.preventDefault();
-
   let targ = e.target ? e.target : e.srcElement;
   if (!targ.classList.contains("dragme")) return;
-
-  targ.style.zIndex = ++highestZ; // Bring dragged image to the front
-
+  
+  dragTarget = targ; // <-- salva o alvo aqui
+  dragTarget.style.zIndex = ++highestZ;
   offsetX = e.clientX;
   offsetY = e.clientY;
-
-  coordX = parseInt(targ.style.left || 0);
-  coordY = parseInt(targ.style.top || 0);
-
+  coordX = parseInt(dragTarget.style.left || 0);
+  coordY = parseInt(dragTarget.style.top || 0);
   drag = true;
-  document.onmousemove = dragDiv;
 }
 
 function dragDiv(e) {
-  if (!drag) return;
+  if (!drag || !dragTarget) return; // <-- usa dragTarget, não e.target
   if (!e) e = window.event;
-
-  let targ = e.target ? e.target : e.srcElement;
-  targ.style.left = coordX + e.clientX - offsetX + "px";
-  targ.style.top = coordY + e.clientY - offsetY + "px";
+  dragTarget.style.left = coordX + e.clientX - offsetX + "px";
+  dragTarget.style.top  = coordY + e.clientY - offsetY + "px";
 }
 
 function stopDrag() {
   drag = false;
+  dragTarget = null; // <-- limpa ao soltar
 }
 
 window.onload = function () {
-  document.onmousedown = startDrag;
-  document.onmouseup = stopDrag;
+  document.addEventListener("mousedown", startDrag);
+  document.addEventListener("mousemove", dragDiv);
+  document.addEventListener("mouseup", stopDrag);
+  document.querySelectorAll(".dragme").forEach((img, i) => {
+    img.style.left = 50 + i * 260 + "px";
+    img.style.top = "100px";
+  });
 };
-  </script>
+</script>
 </html>

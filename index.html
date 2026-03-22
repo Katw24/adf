@@ -749,49 +749,12 @@ body {
       </div>
 
       <!-- CTA -->
-      <button class="cta-btn" onclick="showPage('game')">
+      <button class="cta-btn" onclick="window.location.href='./page1.html'">
         Começar Agora
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </button>
     </div>
   </div>
-
-  <!-- ======================== GAME PAGE ======================== -->
-  <div id="game" class="page" style="flex-direction:column;height:100%;background:#0a0a0a;position:relative;overflow:hidden;">
-    <div class="dot-bg" style="position:absolute;inset:0;pointer-events:none;"></div>
-
-    <div style="position:relative;z-index:10;display:flex;flex-direction:column;height:100%;">
-      <!-- Header -->
-      <div class="game-header">
-        <a onclick="showPage('home')" style="display:flex;align-items:center;gap:6px;text-decoration:none;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
-          Voltar
-        </a>
-        <span style="font-weight:600;font-size:14px;color:rgba(255,255,255,0.6);font-family:'Space Grotesk',sans-serif;">Arranjo de Figuras</span>
-        <button onclick="resetGame()">Reiniciar</button>
-      </div>
-
-      <!-- Game content -->
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:24px;">
-        <div style="text-align:center;">
-          <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(1.1rem,3vw,1.4rem);letter-spacing:-0.01em;margin-bottom:4px;">
-            Uma manhã perfeita
-          </h1>
-          <p style="color:rgba(255,255,255,0.3);font-size:clamp(0.75rem,2vw,0.9rem);">
-            Arraste para contar a história na ordem certa
-          </p>
-        </div>
-
-        <div class="game-cards" id="game-cards"></div>
-
-        <div style="display:flex;align-items:center;gap:20px;font-size:13px;color:rgba(255,255,255,0.3);" id="game-status">
-          <span>Tentativas: <strong id="attempts" style="color:rgba(255,255,255,0.6);">0</strong></span>
-          <span id="status-msg">Arraste e solte para reordenar</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script>
     // ── Page navigation ──
     function showPage(name) {
@@ -874,107 +837,6 @@ body {
     }
 
     runTutorial();
-
-    // ── Game logic ──
-    const puzzleData = [
-      { id: 1, emoji: '🌅', label: 'Nascer do Sol' },
-      { id: 2, emoji: '☀️', label: 'Dia Claro' },
-      { id: 3, emoji: '⛅', label: 'Nuvens' },
-      { id: 4, emoji: '⛈️', label: 'Tempestade' },
-      { id: 5, emoji: '🌈', label: 'Arco-Íris' },
-    ];
-    const correctOrder = [1, 2, 3, 4, 5];
-    let gameCards = [];
-    let dragIdx = null;
-    let attempts = 0;
-    let solved = false;
-
-    function shuffle(arr) {
-      const a = [...arr];
-      for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-      }
-      return a;
-    }
-
-    function initGame() {
-      gameCards = shuffle(puzzleData);
-      while (gameCards.every((c, i) => c.id === correctOrder[i])) {
-        gameCards = shuffle(puzzleData);
-      }
-      dragIdx = null;
-      attempts = 0;
-      solved = false;
-      document.getElementById('attempts').textContent = '0';
-      document.getElementById('status-msg').textContent = 'Arraste e solte para reordenar';
-      renderGameCards();
-    }
-
-    function renderGameCards() {
-      const container = document.getElementById('game-cards');
-      container.innerHTML = '';
-      gameCards.forEach((card, i) => {
-        const div = document.createElement('div');
-        div.className = 'game-card' + (solved ? ' solved' : '');
-        div.draggable = !solved;
-        div.innerHTML = `
-          <span class="card-number">${i + 1}</span>
-          <span class="card-emoji">${card.emoji}</span>
-          <span class="card-label">${card.label}</span>
-          ${solved ? '<span class="game-check">✓</span>' : ''}
-        `;
-        div.addEventListener('dragstart', (e) => {
-          if (solved) return;
-          dragIdx = i;
-          div.classList.add('dragging');
-          e.dataTransfer.effectAllowed = 'move';
-        });
-        div.addEventListener('dragend', () => {
-          div.classList.remove('dragging');
-          if (dragIdx === null) return;
-          attempts++;
-          document.getElementById('attempts').textContent = attempts;
-          if (gameCards.every((c, j) => c.id === correctOrder[j])) {
-            solved = true;
-            document.getElementById('status-msg').textContent = `✨ Completo em ${attempts} ${attempts === 1 ? 'tentativa' : 'tentativas'}!`;
-            renderGameCards();
-          }
-          dragIdx = null;
-        });
-        div.addEventListener('dragover', (e) => {
-          e.preventDefault();
-          if (solved || dragIdx === null || dragIdx === i) return;
-          const item = gameCards.splice(dragIdx, 1)[0];
-          gameCards.splice(i, 0, item);
-          dragIdx = i;
-          renderGameCards();
-        });
-        // Touch support
-        div.addEventListener('touchstart', (e) => {
-          if (solved) return;
-          dragIdx = i;
-          div.classList.add('dragging');
-        }, { passive: true });
-        div.addEventListener('touchend', () => {
-          div.classList.remove('dragging');
-          if (dragIdx === null) return;
-          attempts++;
-          document.getElementById('attempts').textContent = attempts;
-          if (gameCards.every((c, j) => c.id === correctOrder[j])) {
-            solved = true;
-            document.getElementById('status-msg').textContent = `✨ Completo em ${attempts} ${attempts === 1 ? 'tentativa' : 'tentativas'}!`;
-            renderGameCards();
-          }
-          dragIdx = null;
-        });
-        container.appendChild(div);
-      });
-    }
-
-    function resetGame() {
-      initGame();
-    }
   </script>
 </body>
 </html>

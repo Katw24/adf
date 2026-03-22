@@ -4,8 +4,8 @@
   font-family: sans-serif
 }
 .dragme {
-  position: relative;
-  cursor: move;
+  position: absolute;
+  cursor: grab;
   width: 246px;
   max-width: 100%; /* Ensures images don't overflow their container */
   height: auto; /* Maintains aspect ratio */
@@ -15,12 +15,14 @@
   border: 1px solid #000;
 }
 .container {
-  display: flex;
-  flex-wrap: wrap; /* Allows images to wrap to the next line */
+  display: flex;       /* ativa o flexbox */
+  position: relative; /* referência para os filhos com position: absolute */
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: center; /* Centers images horizontally */
-  gap: 10px; /* Adds space between images */
+  justify-content: center;
+  gap: 10px;
   margin: 15px;
+  min-height: 400px;
 }
 .container img[src="./page3Images/bake4.png"] {
   width: 252px;
