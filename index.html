@@ -1,836 +1,178 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<style
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body, #root {
-  height: 100%;
-}
-
-body {
-  font-family: 'Inter', system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  background: #0a0a0a;
-  color: #fff;
-}
-
-::selection {
-  background: rgba(255, 255, 255, 0.15);
-  color: #fff;
-}
-
-/* ── Dot pattern ── */
-.dot-bg {
-  background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
-  background-size: 22px 22px;
-}
-
-/* ── Gradient text ── */
-.gradient-text {
-  background: linear-gradient(135deg, #ffffff 0%, #666 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ── Drag tutorial cards ── */
-.tutorial-track {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.tutorial-card {
-  width: 72px;
-  height: 88px;
-  border-radius: 12px;
-  background: #151515;
-  border: 1px solid rgba(255,255,255,0.08);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  position: relative;
-  flex-shrink: 0;
-  user-select: none;
-}
-
-.tutorial-card .card-emoji {
-  font-size: 26px;
-  line-height: 1;
-}
-
-.tutorial-card .card-label {
-  font-size: 9px;
-  color: rgba(255,255,255,0.4);
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 500;
-}
-
-.tutorial-card .card-number {
-  position: absolute;
-  top: -8px;
-  left: -8px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.08);
-  color: rgba(255,255,255,0.5);
-  font-size: 10px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ── Drag animation sequence ── */
-@keyframes shuffle-in {
-  0%   { opacity: 0; transform: translateY(12px) scale(0.9); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-@keyframes lift {
-  0%   { transform: translateY(0); }
-  100% { transform: translateY(-14px); }
-}
-
-@keyframes slide-right {
-  0%   { transform: translateX(0) translateY(-14px); }
-  100% { transform: translateX(78px) translateY(-14px); }
-}
-
-@keyframes drop {
-  0%   { transform: translateX(78px) translateY(-14px); }
-  100% { transform: translateX(78px) translateY(0); }
-}
-
-@keyframes settle {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(0); }
-}
-
-@keyframes check-appear {
-  0%   { opacity: 0; transform: scale(0); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-@keyframes success-glow {
-  0%   { border-color: rgba(255,255,255,0.08); box-shadow: none; }
-  100% { border-color: rgba(255,255,255,0.25); box-shadow: 0 0 20px rgba(255,255,255,0.06); }
-}
-
-/* Phase 0: cards appear shuffled */
-.card-a { animation: shuffle-in 0.4s ease-out 0.2s both; }
-.card-b { animation: shuffle-in 0.4s ease-out 0.4s both; }
-.card-c { animation: shuffle-in 0.4s ease-out 0.6s both; }
-
-/* Phase 1: card lifts */
-.phase-lift .card-a {
-  animation: lift 0.4s ease-in-out 0.3s both;
-}
-
-/* Phase 2: card slides to position */
-.phase-slide .card-a {
-  animation: slide-right 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
-}
-.phase-slide .card-b {
-  animation: settle 0.3s ease-out 0.5s both;
-}
-
-/* Phase 3: card drops + success */
-.phase-done .card-a {
-  animation: drop 0.3s ease-in 0.1s both, success-glow 0.4s ease 0.3s both;
-}
-.phase-done .card-b {
-  animation: success-glow 0.4s ease 0.4s both;
-}
-.phase-done .card-c {
-  animation: success-glow 0.4s ease 0.5s both;
-}
-.phase-done .card-check {
-  animation: check-appear 0.3s ease 0.6s both;
-}
-
-/* ── CTA button ── */
-.cta-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 32px;
-  background: #fff;
-  color: #000;
-  font-weight: 600;
-  font-size: 15px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 40px rgba(255,255,255,0.08);
-  text-decoration: none;
-  font-family: 'Inter', sans-serif;
-  position: relative;
-  z-index: 10;
-}
-
-.cta-btn:hover {
-  background: rgba(255,255,255,0.9);
-  box-shadow: 0 0 60px rgba(255,255,255,0.12);
-  transform: translateY(-1px);
-}
-
-.cta-btn svg {
-  transition: transform 0.3s ease;
-}
-
-.cta-btn:hover svg {
-  transform: translateX(3px);
-}
-
-/* ── Ambient blobs ── */
-.blob {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.015);
-  filter: blur(80px);
-  pointer-events: none;
-}
-
-@keyframes float-a {
-  0%, 100% { transform: translate(0, 0); }
-  50%      { transform: translate(20px, -15px); }
-}
-
-@keyframes float-b {
-  0%, 100% { transform: translate(0, 0); }
-  50%      { transform: translate(-25px, 20px); }
-}
-
-/* ── Step pills ── */
-.step-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 500;
-  border: 1px solid rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.3);
-  transition: all 0.5s ease;
-}
-
-.step-pill.active {
-  background: rgba(255,255,255,0.06);
-  border-color: rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.8);
-}
-
-.step-pill svg {
-  width: 13px;
-  height: 13px;
-}
-
-/* ── Cursor icon ── */
-.hand-cursor {
-  position: absolute;
-  top: -22px;
-  right: -6px;
-  font-size: 16px;
-  opacity: 0;
-  animation: shuffle-in 0.3s ease-out 0.8s both;
-}
-
-.phase-lift .hand-cursor {
-  opacity: 1;
-  animation: lift 0.4s ease-in-out 0.3s both;
-}
-
-.phase-slide .hand-cursor {
-  opacity: 1;
-  animation: slide-right 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
-}
-
-.phase-done .hand-cursor {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
->
-</style>
-<!DOCTYPE html>
-<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Arranjo de Figuras</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500&display=swap" rel="stylesheet">
+
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    html, body {
-      height: 100%;
-      overflow: hidden;
-      font-family: 'Inter', system-ui, sans-serif;
-      -webkit-font-smoothing: antialiased;
-      background: #0a0a0a;
-      color: #fff;
-    }
-
-    ::selection {
-      background: rgba(255,255,255,0.15);
-      color: #fff;
-    }
-
-    /* ── Background layers ── */
-    .dot-bg {
-      background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
-      background-size: 22px 22px;
-    }
-
-    .grid-lines {
-      background-image:
-        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-      background-size: 80px 80px;
-    }
-
-    .bg-shape {
-      position: absolute;
-      pointer-events: none;
-      opacity: 0.04;
-    }
-
-    @keyframes spin-slow {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    @keyframes float-up {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-12px); }
-    }
-    @keyframes drift-right {
-      0%, 100% { transform: translateX(0) rotate(0deg); }
-      50% { transform: translateX(15px) rotate(5deg); }
-    }
-    @keyframes pulse-soft {
-      0%, 100% { opacity: 0.03; }
-      50% { opacity: 0.06; }
-    }
-
-    /* ── Gradient text ── */
-    .gradient-text {
-      background: linear-gradient(135deg, #ffffff 0%, #666 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* ── Tutorial cards ── */
-    .tutorial-track {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .tutorial-card {
-      width: 74px;
-      height: 90px;
-      border-radius: 12px;
-      background: #151515;
-      border: 1px solid rgba(255,255,255,0.08);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      position: relative;
-      flex-shrink: 0;
-      user-select: none;
-    }
-
-    .tutorial-card .card-emoji { font-size: 28px; line-height: 1; }
-    .tutorial-card .card-label {
-      font-size: 9px;
-      color: rgba(255,255,255,0.4);
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 500;
-    }
-
-    .tutorial-card .card-number {
-      position: absolute;
-      top: -8px;
-      left: -8px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.5);
-      font-size: 10px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .tutorial-card.success .card-number {
-      background: #fff;
-      color: #000;
-    }
-
-    .card-check {
-      position: absolute;
-      top: -7px;
-      right: -7px;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #fff;
-      color: #000;
-      font-size: 10px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transform: scale(0);
-    }
-
-    .card-check.show {
-      animation: check-pop 0.3s ease forwards;
-    }
-
-    /* ── Step pills ── */
-    .step-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 5px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 500;
-      border: 1px solid rgba(255,255,255,0.06);
-      color: rgba(255,255,255,0.25);
-      transition: all 0.5s ease;
-    }
-    .step-pill.active {
-      background: rgba(255,255,255,0.06);
-      border-color: rgba(255,255,255,0.15);
-      color: rgba(255,255,255,0.8);
-    }
-    .step-pill svg { width: 13px; height: 13px; }
-
-    /* ── Ambient blobs ── */
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.015);
-      filter: blur(80px);
-      pointer-events: none;
-    }
-
-    /* ── CTA button ── */
-    .cta-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 32px;
-      background: #fff;
-      color: #000;
-      font-weight: 600;
-      font-size: 15px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 40px rgba(255,255,255,0.08);
-      text-decoration: none;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
       font-family: 'Inter', sans-serif;
     }
-    .cta-btn:hover {
-      background: rgba(255,255,255,0.9);
-      box-shadow: 0 0 60px rgba(255,255,255,0.12);
-      transform: translateY(-1px);
-    }
-    .cta-btn svg {
-      transition: transform 0.3s ease;
-    }
-    .cta-btn:hover svg {
-      transform: translateX(3px);
+
+    body {
+      height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(135deg, #f7f6f3, #eae7e2);
+      color: #1a1a1a;
     }
 
-    /* ── Hand cursor indicator ── */
-    .hand-cursor {
+    .table {
       position: absolute;
-      top: -20px;
-      right: -4px;
-      font-size: 16px;
+      width: 100%;
+      height: 100%;
+      perspective: 1200px;
+    }
+
+    .card {
+      position: absolute;
+      width: 120px;
+      height: 160px;
+      border-radius: 14px;
+
+      /* VARIAÇÕES DE COR */
+      background: var(--bg);
+
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
       opacity: 0;
-      transition: opacity 0.3s;
+
+      animation: deal 1s ease forwards, shuffle 6s ease-in-out infinite;
     }
 
-    /* ── Keyframe animations ── */
-    @keyframes float-a {
-      0%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(20px, -15px); }
-    }
-    @keyframes float-b {
-      0%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(-25px, 20px); }
-    }
-    @keyframes float-c {
-      0%, 100% { transform: translate(0, 0) rotate(0deg); }
-      50% { transform: translate(10px, -20px) rotate(15deg); }
+    /* Paleta mais viva (controlada) */
+    .tone1 { --bg: linear-gradient(145deg, #ffffff, #e3e0db); }
+    .tone2 { --bg: linear-gradient(145deg, #e8eef5, #cfd8e3); } /* azul suave */
+    .tone3 { --bg: linear-gradient(145deg, #e6f0ec, #c8dcd2); } /* verde suave */
+    .tone4 { --bg: linear-gradient(145deg, #f2e9e4, #e0cfc6); } /* terracota */
+    .tone5 { --bg: linear-gradient(145deg, #f0f0f0, #d6d6d6); }
+
+    @keyframes deal {
+      0% {
+        transform: translate(-50%, -50%) scale(0.3);
+        opacity: 0;
+      }
+      60% {
+        transform: translate(var(--x), var(--y)) scale(1.05) rotate(var(--r));
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--x), var(--y)) scale(1) rotate(var(--r));
+        opacity: 1;
+      }
     }
 
-    @keyframes card-enter {
-      0% { opacity: 0; transform: translateY(12px) scale(0.9); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
+    @keyframes shuffle {
+      0%,100% {
+        transform: translate(var(--x), var(--y)) rotate(var(--r));
+      }
+      50% {
+        transform: translate(calc(var(--x) + 25px), calc(var(--y) - 20px)) rotate(calc(var(--r) + 6deg));
+      }
     }
 
-    @keyframes lift-card {
-      0% { transform: translateY(0) scale(1); }
-      100% { transform: translateY(-16px) scale(1.06); box-shadow: 0 20px 40px rgba(255,255,255,0.07); }
-    }
-
-    @keyframes slide-card {
-      0% { transform: translateX(0) translateY(-16px) scale(1.06); }
-      100% { transform: translateX(84px) translateY(-16px) scale(1.06); }
-    }
-
-    @keyframes drop-card {
-      0% { transform: translateX(84px) translateY(-16px) scale(1.06); }
-      100% { transform: translateX(0) translateY(0) scale(1); }
-    }
-
-    @keyframes settle-card {
-      0% { transform: translateX(0); }
-      50% { transform: translateX(-10px); }
-      100% { transform: translateX(0); }
-    }
-
-    @keyframes glow-border {
-      0% { border-color: rgba(255,255,255,0.08); box-shadow: none; }
-      100% { border-color: rgba(255,255,255,0.25); box-shadow: 0 0 20px rgba(255,255,255,0.06); }
-    }
-
-    @keyframes check-pop {
-      0% { opacity: 0; transform: scale(0); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes hint-in {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
-    }
-
-    /* ── Game page ── */
-    .game-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 20px;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    .game-header a, .game-header button {
-      background: none;
-      border: none;
-      color: rgba(255,255,255,0.4);
-      font-size: 14px;
-      cursor: pointer;
-      font-family: inherit;
-      transition: color 0.2s;
-    }
-    .game-header a:hover, .game-header button:hover {
-      color: rgba(255,255,255,0.7);
-    }
-
-    .game-cards {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .game-card {
-      width: 68px;
-      height: 84px;
-      border-radius: 12px;
-      background: #151515;
-      border: 1px solid rgba(255,255,255,0.08);
+    .center {
+      position: relative;
+      z-index: 10;
+      height: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      gap: 4px;
-      position: relative;
-      cursor: grab;
-      transition: transform 0.2s ease, border-color 0.3s, box-shadow 0.3s;
+      align-items: center;
+
+      opacity: 0;
+      animation: fadeIn 1.2s ease forwards;
     }
-    .game-card:active { cursor: grabbing; }
-    .game-card.dragging {
-      transform: scale(1.05) rotate(1deg);
-      border-color: rgba(255,255,255,0.25);
-      box-shadow: 0 15px 30px rgba(255,255,255,0.06);
-      z-index: 10;
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
     }
-    .game-card.solved {
-      border-color: rgba(255,255,255,0.2);
-      cursor: default;
-    }
-    .game-card .card-emoji { font-size: 26px; line-height: 1; }
-    .game-card .card-label {
-      font-size: 9px;
-      color: rgba(255,255,255,0.4);
-      font-family: 'Space Grotesk', sans-serif;
+
+    h1 {
+      font-size: 2.6rem;
       font-weight: 500;
+      margin-bottom: 40px;
+      letter-spacing: 1px;
+      color: #222;
     }
-    .game-card .card-number {
+
+    .btn {
+      padding: 14px 42px;
+      border-radius: 999px;
+      border: 1px solid #222;
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(6px);
+      color: #222;
+      text-decoration: none;
+      transition: 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::after {
+      content: "";
       position: absolute;
-      top: -8px;
-      left: -8px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.5);
-      font-size: 10px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .game-card.solved .card-number {
-      background: #fff;
-      color: #000;
+      inset: 0;
+      background: #222;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: 0.3s ease;
+      z-index: -1;
     }
 
-    .game-card .game-check {
-      position: absolute;
-      top: -7px;
-      right: -7px;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #fff;
-      color: #000;
-      font-size: 10px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: check-pop 0.3s ease forwards;
+    .btn:hover::after {
+      transform: scaleX(1);
     }
 
-    .page { display: none; }
-    .page.active { display: flex; }
-
-    .hint-text {
-      min-height: 20px;
-      animation: hint-in 0.3s ease;
+    .btn:hover {
+      color: #fff;
+      transform: translateY(-2px);
     }
+
   </style>
 </head>
+
 <body>
 
-  <!-- ======================== HOME PAGE ======================== -->
-  <div id="home" class="page active" style="flex-direction:column;height:100%;background:#0a0a0a;position:relative;overflow:hidden;">
-    <div class="dot-bg" style="position:absolute;inset:0;pointer-events:none;"></div>
-    <div class="grid-lines" style="position:absolute;inset:0;pointer-events:none;"></div>
+  <div class="table" id="table"></div>
 
-    <!-- Decorative shapes -->
-    <svg class="bg-shape" style="top:8%;left:5%;width:180px;height:180px;animation:spin-slow 40s linear infinite;" viewBox="0 0 200 200" fill="none" stroke="rgba(255,255,255,1)" stroke-width="0.5">
-      <rect x="40" y="40" width="120" height="120" rx="20" transform="rotate(25 100 100)"/>
-    </svg>
-    <svg class="bg-shape" style="bottom:12%;right:8%;width:140px;height:140px;animation:spin-slow 30s linear infinite reverse;" viewBox="0 0 200 200" fill="none" stroke="rgba(255,255,255,1)" stroke-width="0.5">
-      <polygon points="100,20 180,80 155,170 45,170 20,80"/>
-    </svg>
-    <svg class="bg-shape" style="top:20%;right:12%;width:100px;height:100px;animation:drift-right 6s ease-in-out infinite;" viewBox="0 0 200 200" fill="none" stroke="rgba(255,255,255,1)" stroke-width="0.5">
-      <circle cx="100" cy="100" r="80"/>
-    </svg>
-    <svg class="bg-shape" style="bottom:25%;left:10%;width:120px;height:120px;animation:float-up 5s ease-in-out infinite;" viewBox="0 0 200 200" fill="none" stroke="rgba(255,255,255,1)" stroke-width="0.5">
-      <polygon points="100,10 190,90 150,190 50,190 10,90"/>
-    </svg>
-    <svg class="bg-shape" style="top:55%;left:3%;width:60px;height:60px;animation:spin-slow 20s linear infinite;" viewBox="0 0 200 200" fill="none" stroke="rgba(255,255,255,1)" stroke-width="0.5">
-      <polygon points="100,10 120,80 190,80 130,120 150,190 100,150 50,190 70,120 10,80 80,80"/>
-    </svg>
-    <svg class="bg-shape" style="top:5%;left:50%;width:80px;height:80px;animation:float-up 7s ease-in-out infinite 1s;" viewBox="0 0 200 200" fill="none" stroke="rgba(255,255,255,1)" stroke-width="0.5">
-      <rect x="30" y="30" width="140" height="140" rx="0" transform="rotate(45 100 100)"/>
-    </svg>
-    <svg class="bg-shape" style="bottom:5%;right:30%;width:90px;height:90px;animation:drift-right 8s ease-in-out infinite 2s;" viewBox="0 0 200 200" fill="none" stroke="rgba(255,255,255,1)" stroke-width="0.5">
-      <circle cx="100" cy="100" r="70"/>
-      <line x1="30" y1="100" x2="170" y2="100"/>
-      <line x1="100" y1="30" x2="100" y2="170"/>
-    </svg>
-
-    <div class="blob" style="width:350px;height:350px;top:10%;left:-80px;animation:float-a 8s ease-in-out infinite;background:rgba(255,255,255,0.02);"></div>
-    <div class="blob" style="width:400px;height:400px;bottom:5%;right:-100px;animation:float-b 10s ease-in-out infinite;background:rgba(255,255,255,0.02);"></div>
-    <div class="blob" style="width:200px;height:200px;top:50%;left:40%;animation:float-c 12s ease-in-out infinite;background:rgba(255,255,255,0.015);"></div>
-
-    <!-- Scattered small emojis as background decoration -->
-    <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden;">
-      <span style="position:absolute;top:6%;left:15%;font-size:22px;opacity:0.06;animation:float-up 4s ease-in-out infinite;">🖼️</span>
-      <span style="position:absolute;top:15%;right:20%;font-size:18px;opacity:0.05;animation:drift-right 5s ease-in-out infinite 1s;">🧩</span>
-      <span style="position:absolute;bottom:20%;left:20%;font-size:20px;opacity:0.05;animation:float-up 6s ease-in-out infinite 0.5s;">🎭</span>
-      <span style="position:absolute;top:40%;right:5%;font-size:16px;opacity:0.04;animation:drift-right 7s ease-in-out infinite 2s;">📖</span>
-      <span style="position:absolute;bottom:10%;left:45%;font-size:19px;opacity:0.05;animation:float-up 5.5s ease-in-out infinite 1.5s;">🃏</span>
-      <span style="position:absolute;top:70%;left:6%;font-size:17px;opacity:0.04;animation:drift-right 6s ease-in-out infinite 3s;">📌</span>
-    </div>
-
-    <div style="position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:24px;gap:20px;max-width:720px;margin:0 auto;width:100%;">
-
-      <!-- Badge -->
-      <span style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;border:1px solid rgba(255,255,255,0.1);font-size:12px;color:rgba(255,255,255,0.5);font-weight:500;background:rgba(255,255,255,0.03);">
-        ✦&nbsp; Arraste. Organize.
-      </span>
-
-      <!-- Title -->
-      <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(1.75rem,5vw,3.5rem);letter-spacing:-0.02em;line-height:1.05;text-align:center;">
-        <span class="gradient-text">Arranjo de</span><br>
-        <span style="color:#fff;">Figuras</span>
-      </h1>
-
-      <!-- Tutorial -->
-      <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
-        <!-- Steps -->
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span id="step1" class="step-pill active">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg>
-            Observar
-          </span>
-          <span id="step2" class="step-pill">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l4-4 4 4"/><path d="M9 5v14"/><path d="M15 19l4-4 4 4"/><path d="M19 15V5"/></svg>
-            Arrastar
-          </span>
-          <span id="step3" class="step-pill">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            Descobrir
-          </span>
-        </div>
-
-        <!-- Cards -->
-        <div class="tutorial-track" id="tutorial-cards">
-          <div class="tutorial-card" id="card-0" style="animation: card-enter 0.4s ease-out 0.2s both;">
-            <span class="card-number">1</span>
-            <span class="hand-cursor" id="hand-icon">☝️</span>
-            <span class="card-emoji">🌈</span>
-            <span class="card-label">Desfecho</span>
-            <span class="card-check" id="check-0">✓</span>
-          </div>
-          <div class="tutorial-card" id="card-1" style="animation: card-enter 0.4s ease-out 0.4s both;">
-            <span class="card-number">2</span>
-            <span class="card-emoji">🌅</span>
-            <span class="card-label">Início</span>
-            <span class="card-check" id="check-1">✓</span>
-          </div>
-          <div class="tutorial-card" id="card-2" style="animation: card-enter 0.4s ease-out 0.6s both;">
-            <span class="card-number">3</span>
-            <span class="card-emoji">⛈️</span>
-            <span class="card-label">Conflito</span>
-            <span class="card-check" id="check-2">✓</span>
-          </div>
-        </div>
-
-        <!-- Hint -->
-        <p class="hint-text" id="hint-text" style="color:rgba(255,255,255,0.25);font-size:12px;text-align:center;">
-          Segure e arraste as imagens para reordená-las
-        </p>
-      </div>
-
-      <!-- CTA -->
-      <button class="cta-btn" onclick="window.location.href='./page1.html'">
-        Começar Agora
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-      </button>
-    </div>
+  <div class="center">
+    <h1>Arranjo de Figuras</h1>
+    <a href="page1.html" class="btn">Começar</a>
   </div>
+
   <script>
-    // ── Page navigation ──
-    function showPage(name) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(name).classList.add('active');
-      if (name === 'game') initGame();
+    const table = document.getElementById("table");
+    const tones = ["tone1", "tone2", "tone3", "tone4", "tone5"];
+
+    function createCard(i) {
+      const card = document.createElement("div");
+      card.classList.add("card");
+
+      // adiciona cor variada
+      card.classList.add(tones[Math.floor(Math.random() * tones.length)]);
+
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * window.innerHeight;
+      const r = (Math.random() * 40 - 20) + "deg";
+
+      card.style.setProperty("--x", x + "px");
+      card.style.setProperty("--y", y + "px");
+      card.style.setProperty("--r", r);
+
+      card.style.animationDelay = (i * 0.1) + "s, 2s";
+
+      table.appendChild(card);
     }
 
-    // ── Tutorial animation loop ──
-    const cards = [
-      document.getElementById('card-0'),
-      document.getElementById('card-1'),
-      document.getElementById('card-2'),
-    ];
-    const checks = [
-      document.getElementById('check-0'),
-      document.getElementById('check-1'),
-      document.getElementById('check-2'),
-    ];
-    const handIcon = document.getElementById('hand-icon');
-    const hintText = document.getElementById('hint-text');
-    const steps = [
-      document.getElementById('step1'),
-      document.getElementById('step2'),
-      document.getElementById('step3'),
-    ];
-
-    function resetCards() {
-      cards.forEach(c => {
-        c.style.animation = '';
-        c.classList.remove('success');
-        c.style.borderColor = '';
-        c.style.boxShadow = '';
-        c.style.transform = '';
-      });
-      checks.forEach(ch => ch.classList.remove('show'));
-      handIcon.style.opacity = '0';
-      steps[0].classList.add('active');
-      steps[1].classList.remove('active');
-      steps[2].classList.remove('active');
-      hintText.textContent = 'Segure e arraste as imagens para reordená-las';
+    for (let i = 0; i < 16; i++) {
+      createCard(i);
     }
-
-    function runTutorial() {
-      resetCards();
-
-      // Phase 1: lift card 0
-      setTimeout(() => {
-        steps[0].classList.remove('active');
-        steps[1].classList.add('active');
-        handIcon.style.opacity = '1';
-        cards[0].style.animation = 'lift-card 0.4s ease-in-out forwards';
-      }, 2200);
-
-      // Phase 2: slide card 0 to the right
-      setTimeout(() => {
-        cards[0].style.animation = 'slide-card 0.5s cubic-bezier(0.22,1,0.36,1) forwards';
-      }, 3400);
-
-      // Phase 3: drop + settle + success
-      setTimeout(() => {
-        steps[1].classList.remove('active');
-        steps[2].classList.add('active');
-        cards[0].style.animation = 'drop-card 0.3s ease-in forwards';
-        cards[1].style.animation = 'settle-card 0.3s ease-out 0.15s forwards';
-      }, 4600);
-
-      setTimeout(() => {
-        cards.forEach(c => {
-          c.classList.add('success');
-          c.style.animation = 'glow-border 0.4s ease forwards';
-        });
-        checks.forEach(ch => ch.classList.add('show'));
-        handIcon.style.opacity = '0';
-      }, 5200);
-
-      // Reset after a pause
-      setTimeout(runTutorial, 8000);
-    }
-
-    runTutorial();
   </script>
+
 </body>
 </html>
