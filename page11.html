@@ -1,97 +1,89 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <link rel="stylesheet" type="text/css" href="index.css" />
-    <title>Teste Arranjo de Figuras</title>
-    <imagetitle></imagetitle>
-  </head>
-  <body>
-    <style>
-      body { background-color: #42AAC3; }
-    </style>
-    <h1 class="title">Arraste a imagem na ordem correta</h1>
-    <div class="container">
-      <img
-        src="./page11Images/samuel1.png"
-        alt="drag-and-drop image script"
-        title="drag-and-drop image script"
-        class="dragme"
-      />
-      <img
-        src="./page11Images/samuel2.png"
-        alt="drag-and-drop image script"
-        title="drag-and-drop image script"
-        class="dragme"
-      />
-      <img
-        src="./page11Images/samuel3.png"
-        alt="drag-and-drop image script"
-        title="drag-and-drop image script"
-        class="dragme"
-      />
-       <img
-        src="./page11Images/samuel4.png"
-        alt="drag-and-drop image script"
-        title="drag-and-drop image script"
-        class="dragme"
-      />
-       <img
-        src="./page11Images/samuel5.png"
-        alt="drag-and-drop image script"
-        title="drag-and-drop image script"
-        class="dragme"
-      />
-       <img
-        src="./page11Images/samuel6.png"
-        alt="drag-and-drop image script"
-        title="drag-and-drop image script"
-        class="dragme"
-      />
-    </div>
-  </body>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Arranjo de Figuras</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+  <h1 class="title">Arranjo de Figuras</h1>
+
+  <div class="container">
+    <img src="./page11Images/samuel1.png" class="dragme card" data-order="1">
+    <img src="./page11Images/samuel2.png" class="dragme card" data-order="2">
+    <img src="./page11Images/samuel3.png" class="dragme card" data-order="3">
+    <img src="./page11Images/samuel4.png" class="dragme card" data-order="4">
+    <img src="./page11Images/samuel5.png" class="dragme card" data-order="5">
+    <img src="./page11Images/samuel6.png" class="dragme card" data-order="6">
+  </div>
+
 <script>
 let highestZ = 1;
 let drag = false;
-let dragTarget = null; // <-- guarda referência ao elemento arrastado
+let dragTarget = null;
 let offsetX, offsetY, coordX, coordY;
 
 function startDrag(e) {
   if (!e) e = window.event;
   if (e.preventDefault) e.preventDefault();
+
   let targ = e.target ? e.target : e.srcElement;
   if (!targ.classList.contains("dragme")) return;
-  
-  dragTarget = targ; // <-- salva o alvo aqui
+
+  dragTarget = targ;
   dragTarget.style.zIndex = ++highestZ;
+
   offsetX = e.clientX;
   offsetY = e.clientY;
+
   coordX = parseInt(dragTarget.style.left || 0);
   coordY = parseInt(dragTarget.style.top || 0);
+
   drag = true;
 }
 
 function dragDiv(e) {
-  if (!drag || !dragTarget) return; // <-- usa dragTarget, não e.target
+  if (!drag || !dragTarget) return;
   if (!e) e = window.event;
+
   dragTarget.style.left = coordX + e.clientX - offsetX + "px";
   dragTarget.style.top  = coordY + e.clientY - offsetY + "px";
 }
 
 function stopDrag() {
   drag = false;
-  dragTarget = null; // <-- limpa ao soltar
+  dragTarget = null;
 }
 
 window.onload = function () {
   document.addEventListener("mousedown", startDrag);
   document.addEventListener("mousemove", dragDiv);
   document.addEventListener("mouseup", stopDrag);
-  document.querySelectorAll(".dragme").forEach((img, i) => {
-  const col = i % 3;          // 0, 1, 2 → coluna
-  const row = Math.floor(i / 3); // 0 ou 1 → linha
-  img.style.left = 30  + col * 260 + "px";
-  img.style.top  = 20  + row * 280 + "px";
-});
+
+  const cards = document.querySelectorAll(".dragme");
+
+  const cols = 3;
+  const spacingX = 240;
+  const spacingY = 260;
+
+  const startX = (window.innerWidth / 2) - (spacingX * 1.5);
+  const startY = 160;
+
+  cards.forEach((img, i) => {
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+
+    const randomRotate = Math.random() * 6 - 3;
+
+    img.style.left = (startX + col * spacingX) + "px";
+    img.style.top  = (startY + row * spacingY) + "px";
+
+    img.style.transform = `rotate(${randomRotate}deg)`;
+  });
 };
 </script>
+
+</body>
 </html>

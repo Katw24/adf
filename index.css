@@ -1,53 +1,91 @@
+/* BASE */
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #f7f6f3, #eae7e2);
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  color: #222;
+}
+
+/* TÍTULO */
 .title {
-  font-size: 1.5rem;
   text-align: center;
-  font-family: sans-serif
+  font-size: 2rem;
+  font-weight: 500;
+  margin-top: 30px;
+  letter-spacing: 0.5px;
 }
-.dragme {
-  position: absolute;
-  cursor: grab;
-  width: 246px;
-  max-width: 100%; /* Ensures images don't overflow their container */
-  height: auto; /* Maintains aspect ratio */
-}
-.draggable {
-  background-color: #ccc;
-  border: 1px solid #000;
-}
+
+/* CONTAINER */
 .container {
-  display: flex;       /* ativa o flexbox */
-  position: relative; /* referência para os filhos com position: absolute */
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin: 15px;
-  min-height: 620px;
+  position: relative;
+  width: 100%;
+  height: 75vh;
 }
-.container img[src="./page3Images/bake4.png"] {
-  width: 252px;
-  height: auto; /* Maintain the aspect ratio */
+
+/* CARTAS */
+.card {
+  position: absolute;
+  width: 240px;
+  border-radius: 14px;
+
+  background: linear-gradient(145deg, #ffffff, #e6e3df);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+
+  cursor: grab;
+  transform-origin: center;
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.container img[src="./page4Images/opens5.png"] {
-  margin-top: 8px;
+
+/* NÚMERO DISCRETO */
+.card::before {
+  content: attr(data-order);
+
+  position: absolute;
+  top: 8px;
+  left: 10px;
+
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  color: rgba(0, 0, 0, 0.6);
+
+  background: #f9f5c1;
+  padding: 2px 6px;
+  border-radius: 6px;
+
+  backdrop-filter: blur(4px);
 }
-.container img[src="./page11Images/shark5.png"] {
-  margin-top: 10px;
+
+/* HOVER */
+.card:hover {
+  transform: scale(1.05) rotate(0deg);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+  z-index: 999;
 }
+
+/* ARRASTANDO */
+.card:active {
+  cursor: grabbing;
+  transform: scale(1.08) rotate(0deg);
+}
+
+/* BOTÃO */
 .linkContainer {
-  position: fixed;  /* Keeps it in place even when scrolling */
-  right: 10px;      /* Places it on the right side */
-  top: 50%;         /* Positions it in the vertical center */
-  transform: translateY(-50%); /* Centers it vertically */
-  padding: 0;       /* Remove unnecessary padding */
-  text-align: right; /* Ensures proper alignment */
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
 }
-.linkinicio {
-  display: flex; /* Use flexbox for centering */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+
+.link img {
+  width: 70px;
+  opacity: 0.8;
+  transition: 0.3s ease;
 }
-.linkinicio img {
-  height: auto; /* Maintain aspect ratio */
-  display: block;
+
+.link img:hover {
+  transform: scale(1.1);
+  opacity: 1;
 }

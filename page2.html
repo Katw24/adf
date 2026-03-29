@@ -1,96 +1,88 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <link rel="stylesheet" type="text/css" href="index.css" />
-    <title>Teste Arranjo de Figuras</title>
-  </head>
-  <body>
-    <style>
-      body { background-color: #BDE6D6;}
-    </style>
-    <h1 class="title">Arraste a imagem na ordem correta</h1>
-    <div class="container">
-      <img
-        src="./page2Images/chase1.png"
-        alt="drag-and-drop image script"
-        title="drag-and-drop image script"
-        class="dragme"
-        id="1"
-      />
-      <img
-        src="./page2Images/chase2.png"
-        alt="drag-and-drop image script"
-        title="drag-and-drop image script"
-        class="dragme"
-      />
-      <img
-        src="./page2Images/chase3.png"
-        alt="drag-and-drop image script"
-        title="drag-and-drop image script"
-        class="dragme"
-      />
-      <img
-        src="./page2Images/chase4.png"
-        alt="drag-and-drop image script"
-        title="drag-and-drop image script"
-        class="dragme"
-      />
-      <img
-        src="./page2Images/chase5.png"
-        alt="drag-and-drop image script"
-        title="drag-and-drop image script"
-        class="dragme"
-      />
-    </div>
-    <div class="linkContainer">
-      <a class="link" href="./page3.html"> 
-      <img 
-        src="./outros/7604747.png"; 
-        width="11%"
-        alt="próximo"></a>
-    </div>
-  </body>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Arranjo de Figuras</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+  <h1 class="title">Arranjo de Figuras</h1>
+
+  <div class="container">
+    <img src="./page2Images/chase1.png" class="dragme card" data-order="1">
+    <img src="./page2Images/chase2.png" class="dragme card" data-order="2">
+    <img src="./page2Images/chase3.png" class="dragme card" data-order="3">
+    <img src="./page2Images/chase4.png" class="dragme card" data-order="4">
+    <img src="./page2Images/chase5.png" class="dragme card" data-order="5">
+  </div>
+
+  <div class="linkContainer">
+    <a href="./page3.html" class="link">
+      <img src="./outros/7604747.png" alt="próximo">
+    </a>
+  </div>
+
 <script>
 let highestZ = 1;
 let drag = false;
-let dragTarget = null; // <-- guarda referência ao elemento arrastado
+let dragTarget = null;
 let offsetX, offsetY, coordX, coordY;
 
 function startDrag(e) {
   if (!e) e = window.event;
   if (e.preventDefault) e.preventDefault();
+
   let targ = e.target ? e.target : e.srcElement;
   if (!targ.classList.contains("dragme")) return;
-  
-  dragTarget = targ; // <-- salva o alvo aqui
+
+  dragTarget = targ;
   dragTarget.style.zIndex = ++highestZ;
+
   offsetX = e.clientX;
   offsetY = e.clientY;
+
   coordX = parseInt(dragTarget.style.left || 0);
   coordY = parseInt(dragTarget.style.top || 0);
+
   drag = true;
 }
 
 function dragDiv(e) {
-  if (!drag || !dragTarget) return; // <-- usa dragTarget, não e.target
+  if (!drag || !dragTarget) return;
   if (!e) e = window.event;
+
   dragTarget.style.left = coordX + e.clientX - offsetX + "px";
   dragTarget.style.top  = coordY + e.clientY - offsetY + "px";
 }
 
 function stopDrag() {
   drag = false;
-  dragTarget = null; // <-- limpa ao soltar
+  dragTarget = null;
 }
 
 window.onload = function () {
   document.addEventListener("mousedown", startDrag);
   document.addEventListener("mousemove", dragDiv);
   document.addEventListener("mouseup", stopDrag);
-  document.querySelectorAll(".dragme").forEach((img, i) => {
-    img.style.left = 50 + i * 260 + "px";
-    img.style.top = "100px";
+
+  const cards = document.querySelectorAll(".dragme");
+
+  const paddingX = 60;
+  const startY = 180;
+  const spacingX = 200;
+
+  cards.forEach((img, i) => {
+    const randomRotate = Math.random() * 6 - 3;
+
+    img.style.left = (paddingX + i * spacingX) + "px";
+    img.style.top  = startY + "px";
+
+    img.style.transform = `rotate(${randomRotate}deg)`;
   });
 };
 </script>
+
+</body>
 </html>
